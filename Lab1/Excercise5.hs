@@ -27,3 +27,5 @@ first100Consecutive101PrimeSums = [sum (getPrimes x) | x <- [0 .. 100]]
 -- Filter out all summations that are not primes, return the head as this should be the smallest prime number that is a sum of 101 consecutive primes.
 consecutive101Prime :: Integer
 consecutive101Prime = head (filter prime first100Consecutive101PrimeSums)
+
+-- What we can definitely say about the solution is that the output is the first prime that is found after going through a number of sums of 101 consecutive primes.

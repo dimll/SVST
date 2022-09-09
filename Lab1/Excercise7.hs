@@ -1,3 +1,5 @@
+-- Time spent: 120 minutes
+
 import Data.List
 import Test.QuickCheck
 
