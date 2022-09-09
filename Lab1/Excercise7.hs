@@ -20,7 +20,7 @@ convertIntToIntArray n = map (read . (: "")) (show n)
 getPayloadChecksum :: [Int] -> Int
 getPayloadChecksum a = (10 - getPayloadSum a `mod` 10) `mod` 10
 
--- The the sum of the entire payload (complete Int - last digit)
+-- The sum of the entire payload (complete Int - last digit)
 getPayloadSum :: [Int] -> Int
 getPayloadSum a = sum (sumIntsOver10 $ makeWeightedProducts a)
 
