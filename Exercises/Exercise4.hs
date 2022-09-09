@@ -22,7 +22,7 @@ reversibleStream = filter (prime . reversal) primes
 -- Two test if a (more than 1 digit ) number is prime and its 
 -- reversable is prime as well the modulo with 6 must be equal to 1
 -- or 5. This is a property of reversed primes
--- Math source: 
+-- Math source: https://math.stackexchange.com/questions/41623/is-that-true-that-all-the-prime-numbers-are-of-the-form-6m-pm-1
 
 -- Helper function 
 testEqAfterModBy6 :: Integer -> Bool
