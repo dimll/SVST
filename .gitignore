@@ -27,5 +27,5 @@ cabal.project.local~
  
 .dist-newstyle/
 .app/
-.CHANGELOG.md
-.software.cabal 
+CHANGELOG.md
+software.cabal 
