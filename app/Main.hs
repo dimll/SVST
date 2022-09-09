@@ -161,7 +161,7 @@ getDigits 0 = []
 getDigits x = getDigits (x `div` 10) ++ [x `mod` 10]
 
 getMiddleResult :: [Integer] -> [Integer]
-getMiddleResult l = zipWith (*) l (take (length l) $ cycle[1,2])
+getMiddleResult l = zipWith (*) l (take (length l - 1) $ cycle[1,2])
 
 uniteAndSum :: Integer -> Integer
 uniteAndSum k 
