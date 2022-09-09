@@ -178,7 +178,8 @@ originalCheckDigit:: Integer -> Integer
 originalCheckDigit k = last (getDigits k)
 
 checkDigitCalculation:: Integer -> Integer
-checkDigitCalculation k = checkDigit( sumDigits( getMiddleResult (take 15 (getDigits k)))) 
+checkDigitCalculation k = checkDigit( sumDigits( getMiddleResult (take (n-1) (getDigits k)))) 
+  where n = length (getDigits k) 
 
 luhn ::  Integer -> Bool 
 luhn k
@@ -190,7 +191,7 @@ main :: IO ()
 main = do
     let l1 = [1,2,3,4,5,6,7,8,9,10]
     --putStrLn "heyy!"
-    print (uniteAndSum 8)
+    print (000025)
     --print (sumDigits( getMiddleResult( getDigits 1234)))
     --print (modBy6E1 primes) 
     --quickCheck prop_test 
