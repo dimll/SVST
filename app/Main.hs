@@ -46,6 +46,13 @@ prop_sumAtLeastN2 n = (n>=1) ==> (f1_2 n >=  n ^ 2)
 prop_diff1:: Int -> Property
 prop_diff1 n = (n>=1) ==> (f1_2 (n+1) - f1_2 n == (n+1)^2)
 
+-- Property 4: if n>3, the answer is never prime 
+isPrime :: Int -> Bool 
+isPrime x = null [y | y<- [2..floor(sqrt(fromIntegral x))], x `mod` y ==0 ]
+
+teamSumSquare4 :: Int -> Property
+teamSumSquare4 n = (n>3) ==> (isPrime (f1_2 n)== False)
+
 -- Properties definition for workshop exercise #3
 
 -- Property 1: The equality should be tested
@@ -340,13 +347,28 @@ euler10 :: Integer
 euler10 = sum primesv2
 
 ---------------------------- BONUS 10 END ------------------------------------
+---------------------------- BONUS 49 START ------------------------------------
+
+-- Euler problem 49
+-- https://projecteuler.net/problem=49
+
+-- Generating all 4 digit primes in a list
+primesv3 :: [Integer]
+primesv3 = filter primev2 [1000..9999]
+
+-- fuck off
+
+
+
+
 -- MAIN FUNCTION---
 main :: IO ()
 main = do
     let l1 = [1,2,3,4,5,6,7,8,9,10]
     --putStrLn "heyy!"
     --print (luhnTestingFunction validLuhnNumbers)
-    print (euler10)
+    print (permutations [1,2,3,4])
+    --print (last primesv3)
     --print (modBy6E1 primes) 
     --quickCheck prop_test 
    

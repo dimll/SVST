@@ -44,6 +44,13 @@ prop_sumAtLeastN2 n = (n>=1) ==> (f1_2 n >=  n ^ 2)
 prop_diff1:: Int -> Property
 prop_diff1 n = (n>=1) ==> (f1_2 (n+1) - f1_2 n == (n+1)^2)
 
+-- Property 4: if n>3, the answer is never prime 
+isPrime :: Int -> Bool 
+isPrime x = null [y | y<- [2..floor(sqrt(fromIntegral x))], x `mod` y ==0 ]
+
+teamSumSquare4 :: Int -> Property
+teamSumSquare4 n = (n>3) ==> (isPrime (f1_2 n)== False)
+
 -- Properties definition for workshop exercise #3
 
 -- Property 1: The equality should be tested
