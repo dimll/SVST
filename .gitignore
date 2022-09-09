@@ -21,3 +21,11 @@ cabal.project.local
 cabal.project.local~
 .HTF/
 .ghc.environment.*
+
+# Personal preferences
+# to have only the .hs files
+ 
+dist-newstyle/
+app/
+CHANGELOG.md
+software.cabal 
