@@ -298,15 +298,55 @@ testingValidity validityFuncton testingList = length (filter (==True) (map valid
 
 -- Time spent: 3h
 --------------------------- EXERCISE 7 END------------------------------------- 
+---------------------------- BONUS 9 START ------------------------------------
+-- Euler problem 9
+-- https://projecteuler.net/problem=9
 
+-- The maximum possible number for b is 499 since all numbers
+-- are natural and a<b<c. So lets try b from 2 to 499
+-- c <- [1..998]
+bPossibleList :: [Integer]
+bPossibleList = [2..499]
 
+-- Also since a+b+c=1000 => c = 1000-a-b should be a constant
+-- Finally from the PT: a^2+b^2 must be equal to c^2
+
+-- Using haskell list comprehension
+euler9  :: Integer
+euler9 = head [a*b*c | b<-bPossibleList, a<-[1..b], let c = 1000-a-b, a^2+b^2 == c^2]
+
+-- (Better) intresting solution: https://www.xarg.org/puzzle/project-euler/problem-9/
+---------------------------- BONUS 9 END ------------------------------------
+
+---------------------------- BONUS 10 START ------------------------------------
+-- Euler problem 10
+-- https://projecteuler.net/problem=10
+
+-- We are using the previous helper functions to check 
+-- for the prime numbers
+
+primev2 :: Integer -> Bool
+primev2 n = n > 1 && all (\x -> rem n x /= 0) xs
+  where
+    xs = takeWhile (\y -> y ^ 2 <= n) primesv2
+
+-- We generate all the prime numbers starting from 2 to 2M
+-- Note: 9999991 is the last element 
+primesv2 :: [Integer]
+primesv2 = 2:filter primev2 [3..2000000]
+
+-- Calculate the sum of all those numbers
+euler10 :: Integer
+euler10 = sum primesv2
+
+---------------------------- BONUS 10 END ------------------------------------
 -- MAIN FUNCTION---
 main :: IO ()
 main = do
     let l1 = [1,2,3,4,5,6,7,8,9,10]
     --putStrLn "heyy!"
     --print (luhnTestingFunction validLuhnNumbers)
-    print (testingValidity isAmericanExpress americanExpValid )
+    print (euler10)
     --print (modBy6E1 primes) 
     --quickCheck prop_test 
    
