@@ -22,6 +22,8 @@ accusations :: Boy -> [Boy]
 accusations b = filter (accuses b) boys
 
 -- Sort all accusations by their length and retrieve the list of accusers with the most boys.
+-- The below is the source for sorting the list by nested list length
+-- https://stackoverflow.com/questions/2307893/sorting-lists-of-lists-in-haskell
 honest :: [Boy]
 honest = last $ last (groupBy ((==) `on` length) $ sortBy (compare `on` length) (map accusers boys))
 
