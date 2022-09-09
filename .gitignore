@@ -25,7 +25,7 @@ cabal.project.local~
 # Personal preferences
 # to have only the .hs files
  
-dist-newstyle/
-app/
-CHANGELOG.md
-software.cabal 
+.dist-newstyle/
+.app/
+.CHANGELOG.md
+.software.cabal 
