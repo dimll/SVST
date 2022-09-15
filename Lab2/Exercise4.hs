@@ -3,6 +3,8 @@
 import Data.List
 import Data.Char
 import Test.QuickCheck
+(-->) :: Bool -> Bool -> Bool 
+p --> q = not p || q 
 
 -- https://stackoverflow.com/questions/14688716/removing-the-first-instance-of-x-from-a-list
 -- This function removes the first insance of a number in a list
@@ -21,28 +23,28 @@ isPermutation (x:xs) y =
         else False
 
 propIsSortedListsEq :: [Integer] -> [Integer] -> Bool
-propIsSortedListsEq a1 a2 = sort a1 == sort a2 
+propIsSortedListsEq a1 a2 = isPermutation a1 a2 --> (sort a1 == sort a2)
 
 propIsListInAllPermutations :: [Integer] -> [Integer] -> Bool 
-propIsListInAllPermutations a1 a2 = a1 `elem` permutations a2
+propIsListInAllPermutations a1 a2 = isPermutation a1 a2 --> (a1 `elem` permutations a2)
 
 propIsSameLength :: [Integer] -> [Integer] -> Bool 
-propIsSameLength a1 a2 = length a1 == length a2  
+propIsSameLength a1 a2 = isPermutation a1 a2 --> (length a1 == length a2)
 
 propIsSameSum :: [Integer] -> [Integer] -> Bool 
-propIsSameSum a1 a2 = sum a1 == sum a2  
+propIsSameSum a1 a2 = isPermutation a1 a2 --> (sum a1 == sum a2)
 
 testPropIsSortedListsEq :: Property
-testPropIsSortedListsEq = forAll orderedList (\xs -> isPermutation xs (reverse xs) && propIsSortedListsEq xs (reverse xs))
+testPropIsSortedListsEq = forAll orderedList (\xs -> propIsSortedListsEq xs (reverse xs))
 
 testIsListInAllPermutations :: Property 
-testIsListInAllPermutations = forAll ((arbitrary :: Gen [Integer]) `suchThat` (\xs -> length xs < 10)) (\xs -> isPermutation xs (reverse xs) && propIsListInAllPermutations xs (reverse xs))
+testIsListInAllPermutations = forAll ((arbitrary :: Gen [Integer]) `suchThat` (\xs -> length xs < 10)) (\xs -> propIsListInAllPermutations xs (reverse xs))
 
 testPropIsSameLength :: Property
-testPropIsSameLength = forAll orderedList (\xs -> isPermutation xs (reverse xs) && propIsSameLength xs (reverse xs))
+testPropIsSameLength = forAll orderedList (\xs -> propIsSameLength xs (reverse xs))
 
 testPropIsSameSum :: Property
-testPropIsSameSum = forAll orderedList (\xs -> isPermutation xs (reverse xs) && propIsSameSum xs (reverse xs))
+testPropIsSameSum = forAll orderedList (\xs -> propIsSameSum xs (reverse xs))
 
 {- 
 We have identified three property functions. 
