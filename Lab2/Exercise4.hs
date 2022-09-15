@@ -4,13 +4,20 @@ import Data.List
 import Data.Char
 import Test.QuickCheck
 
+-- https://stackoverflow.com/questions/14688716/removing-the-first-instance-of-x-from-a-list
+-- This function removes the first insance of a number in a list
+-- This helps the isPermutation function by allowing duplicates to be allowed in the permuatated list
+deleteFirst _ [] = [] 
+deleteFirst a (b:bc) | a == b = bc 
+                     | otherwise = b : deleteFirst a bc
+
 -- This only works with a list that does not have duplicates
 isPermutation :: Eq a  => [a] -> [a] -> Bool
 isPermutation [] [] = True
 isPermutation [] y = False
 isPermutation (x:xs) y =
-    if x `elem` y
-        then isPermutation xs (filter (\elem -> elem /= x) y)
+    if (x `elem` y)
+        then isPermutation xs (deleteFirst x y)
         else False
 
 propIsSortedListsEq :: [Integer] -> [Integer] -> Bool
@@ -26,16 +33,16 @@ propIsSameSum :: [Integer] -> [Integer] -> Bool
 propIsSameSum a1 a2 = sum a1 == sum a2  
 
 testPropIsSortedListsEq :: Property
-testPropIsSortedListsEq = forAll orderedList (\xs -> propIsSortedListsEq xs (reverse xs))
+testPropIsSortedListsEq = forAll orderedList (\xs -> isPermutation xs (reverse xs) && propIsSortedListsEq xs (reverse xs))
 
 testIsListInAllPermutations :: Property 
-testIsListInAllPermutations = forAll ((arbitrary :: Gen [Integer]) `suchThat` (\xs -> length xs < 10)) (\xs -> propIsListInAllPermutations xs (reverse xs))
+testIsListInAllPermutations = forAll ((arbitrary :: Gen [Integer]) `suchThat` (\xs -> length xs < 10)) (\xs -> isPermutation xs (reverse xs) && propIsListInAllPermutations xs (reverse xs))
 
 testPropIsSameLength :: Property
-testPropIsSameLength = forAll orderedList (\xs -> propIsSameLength xs (reverse xs))
+testPropIsSameLength = forAll orderedList (\xs -> isPermutation xs (reverse xs) && propIsSameLength xs (reverse xs))
 
 testPropIsSameSum :: Property
-testPropIsSameSum = forAll orderedList (\xs -> propIsSameSum xs (reverse xs))
+testPropIsSameSum = forAll orderedList (\xs -> isPermutation xs (reverse xs) && propIsSameSum xs (reverse xs))
 
 {- 
 We have identified three property functions. 
