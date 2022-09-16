@@ -43,15 +43,19 @@ genRectangular n = [(x*3, x*4, x*5) | x <- [1..n]]
 
 -- Test Functions
 
+-- Is valid if length of array is 0
 testNoTriangle :: Integer -> [(Integer, Integer, Integer)]
 testNoTriangle n =  filter (\(x,y,z) -> triangle x y z /= NoTriangle) (genNoTriangle n)
 
+-- Is valid if length of array is 0
 testEquilateral :: Integer -> [(Integer, Integer, Integer)]
 testEquilateral n = filter (\(x,y,z) -> triangle x y z /= Equilateral) (genEquilateral n)
 
+-- Is valid if length of array is 0
 testIsosceles :: Integer -> [(Integer, Integer, Integer)]
 testIsosceles n = filter (\(x,y,z) -> triangle x y z /= Isosceles) (genIsosceles n)
 
+-- Is valid if length of array is 0
 testRectangular :: Integer -> [(Integer, Integer, Integer)]
 testRectangular n = filter (\(x,y,z) -> triangle x y z /= Rectangular) (genRectangular n)
 
