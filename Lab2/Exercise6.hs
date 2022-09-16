@@ -32,7 +32,7 @@ symbols=['*','?',',','.',':','-','_','=','+','-','/']
 
 lookupTable :: [a] -> [b] -> [(a,b)]
 lookupTable [] _ = []
-lookupTable (x:xs) (y:ys) = [(x,y)] ++ lookupTable xs ys
+lookupTable (x:xs) (y:ys) = (x,y) : lookupTable xs ys
 
 inpt :: [Char]
 inpt = uppercaseAtoM ++ uppercaseNtoZ ++ lowercaseAtoM ++ lowercaseNtoZ ++ nums ++ symbols
@@ -40,27 +40,30 @@ inpt = uppercaseAtoM ++ uppercaseNtoZ ++ lowercaseAtoM ++ lowercaseNtoZ ++ nums 
 out :: [Char]
 out = uppercaseNtoZ ++ uppercaseAtoM ++ lowercaseNtoZ ++ lowercaseAtoM ++ nums ++ symbols
 
-formTable = (lookupTable inpt out ) ++ [(' ', ' ')]
+formTable = lookupTable inpt out ++ [(' ', ' ')]
 --Encoding:
 newLetter n =snd (( filter (\x -> fst(x) == n) ((lookupTable inpt out ) ++ [(' ', ' ')]) ) !! 0)
 
 rot13 :: [Char] -> [Char]
-rot13 n = map(newLetter) n
+rot13 = map newLetter
 
 --Decoding:
 oldLetter n =fst (( filter (\x -> snd(x) == n) ((lookupTable inpt out ) ++ [(' ', ' ')]) ) !! 0)
 
 revrot13 :: [Char] -> [Char]
-revrot13 n = map(oldLetter) n
+revrot13 = map oldLetter
 
 --Prop 1: 2 successive applications of rot13 must return the same text (rot13 is also its own inverse)
 testprop1 :: [Char] -> Bool
-testprop1 n = (rot13 ( rot13 n)) == (revrot13 (rot13 n))
+testprop1 n = rot13 (rot13 n) == revrot13 (rot13 n)
 
-
--- to test the testprop1 : in prelude : quickCheck $ forAll genStrings $ testprop1  
 test :: Gen Char
 test = elements ['a'..'z']
 
 genStrings :: Gen String
 genStrings = listOf test
+
+-- We use quick check to verify our findings with the following test.
+main :: IO () 
+main = do 
+    quickCheck $ forAll genStrings testprop1
