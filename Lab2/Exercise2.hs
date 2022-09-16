@@ -1,5 +1,3 @@
--- Time spent: 2 hours
-
 import Data.List
 import Data.Char
 import System.Random
