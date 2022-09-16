@@ -59,9 +59,15 @@ testIsosceles n = filter (\(x,y,z) -> triangle x y z /= Isosceles) (genIsosceles
 testRectangular :: Integer -> [(Integer, Integer, Integer)]
 testRectangular n = filter (\(x,y,z) -> triangle x y z /= Rectangular) (genRectangular n)
 
--- We did not want to test our function by using the function, because if the triangle function is incorrect, then our tests will be obsolete. 
--- In other words, instead of reverse engineering the triangle function, we test it with different known domains.
--- The generators above, generates sequences of proven special triangles. They are strong preconditions, and while it would be better with weaker ones, this still tests that our function works with these predetermined triangles. 
--- As can be seen, there is not a generator for the Other type, this would be unecessary. Since, if a triangle does not fit in as a NoTriangle, Equilateral, Isoscoles or Rectangular, it's Other considered in the same domain.
+-- We did not want to test our function by using the function, 
+-- because if the triangle function is incorrect, then our tests will be obsolete. 
+-- In other words, instead of reverse engineering the triangle function, 
+-- we test it with different known domains.
+-- The generators above, generates sequences of proven special triangles. 
+-- They are strong preconditions, and while it would be better with weaker ones, 
+-- this still tests that our function works with these predetermined triangles. 
+-- As can be seen, there is not a generator for the Other type, this would be unecessary.
+-- Since, if a triangle does not fit in as a NoTriangle, Equilateral, Isoscoles or Rectangular,
+--  it's Other considered in the same domain.
 
 -- Time Spent : 2 hours

@@ -67,3 +67,5 @@ genStrings = listOf test
 main :: IO () 
 main = do 
     quickCheck $ forAll genStrings testprop1
+
+-- Time spent: 1h
