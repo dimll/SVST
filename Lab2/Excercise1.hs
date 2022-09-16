@@ -3,6 +3,7 @@ import Data.Char
 import System.Random
 import Test.QuickCheck
 
+--Monads do not store the values or do not evaluate the values, they just display the outcome
 probs :: Int -> IO [Float]
 probs 0 = return []
 probs n = do
@@ -10,18 +11,32 @@ probs n = do
     ps <- probs (n-1)
     return (p:ps)
 
-seperator :: IO [Float] -> IO [[Float]]
-seperator n = do
-    x1 <- n >>= \y -> return [x | x <- y, x > 0, x < 0.25]
-    x2 <- n >>= \y -> return [x | x <- y, x >= 0.25, x < 0.5]
-    x3 <- n >>= \y -> return [x | x <- y, x >= 0.5, x < 0.75]
-    x4 <- n >>= \y -> return [x | x <- y, x >= 0.75, x < 1.0]
-    x5 <- n >>= \y -> return [x | x <- y, not ((x > 0 && x < 0.25) || (x>= 0.25 && x < 0.5) || (x>= 0.5 && x < 0.75) || (x>= 0.75 && x < 1))]
-    return [x1, x2, x3, x4, x5]
 
-counter :: IO [[Float]] -> IO [Int]
-counter a = a >>= \y -> return $ map length y
 
-countProbs :: IO Int 
-countProbs = probs 10000 >>= \y -> return $ length y 
+
+--Step 1: we take func2 which maps  func1 on every element in list x
+func2 x = fmap func1 x
+
+--Step 2: We take each element of x and put them into intervals
+func1 :: Float -> [Char]
+func1 n = do
+            if  n>0 && n<0.25
+                then  "Interval 1"
+            else if n>=0.25 && n<0.5
+                then "Interval 2"
+            else if n>0.5 && n<0.75
+                then "Interval 3"
+            else "Interval 4"
+
+
+--Step 3: We count number of times each element occurs in a list
+numTimesFound x xs = (length. filter (== x)) xs
+
+main :: IO ()
+main = do
+    var <- probs 1000 -- we unwrapped IO float to [Float] using <-
+    print(numTimesFound "Interval 1" (func2 $ var))
+    print(numTimesFound "Interval 2" (func2 $ var))
+    print(numTimesFound "Interval 3" (func2 $ var))
+    print(numTimesFound "Interval 4" (func2 $ var))
 
