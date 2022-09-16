@@ -30,3 +30,36 @@ convertLettersToNumericValue = concatMap (\x -> if ord x > 57 then show $ ord x 
 -- Return true if remainder is correct
 computeRemainder :: String -> Bool 
 computeRemainder n = read ( convertLettersToNumericValue $ move4CharactersToEnd n) `mod` 97 == 1
+
+--testIncorrectNumbers :: Property 
+--testIncorrectNumbers = forAll ((arbitrary :: Gen [Integer]) `suchThat` (\xs -> length == snd $ choose countrycodes)) (\(countryCode, countryLength) -> iban . concat countryCode [1..countryLength])
+
+genCountryCodeTouple :: Gen ([Char], Int)
+genCountryCodeTouple = elements countrycodes
+
+genNumbers :: Int -> Gen [Int]
+genNumbers n = (arbitrary :: Gen [Int]) `suchThat` (\xs -> length xs < n)
+
+--genCountryCodeTouple (\(cc, cl) -> cc ++ genNumbers cl)
+genInvalidIBAN :: Gen String
+genInvalidIBAN = do 
+    countryCode <- genCountryCodeTouple
+    randomDigits <-  genNumbers (snd (countryCode >>= \x -> return x))
+    return (concatMap show randomDigits)
+
+main :: IO () 
+main = do 
+    print "10 Correct example IBANs"
+    print $ iban "BR1500000000000010932840814P2"
+    print $ iban "BG18RZBB91550123456789"
+    print $ iban "CR23015108410026012345"
+    print $ iban "SV43ACAT00000000000000123123"
+    print $ iban "XK051212012345678906"
+    print $ iban "NO8330001234567"
+    print $ iban "PK36SCBL0000001123456702"
+    print $ iban "PS92PALS000000000400123456702"
+    print $ iban "PL10105000997603123456789123"
+    print $ iban "QA54QNBA000000000000693123456"
+    print "====================================="
+    print "Check for 100 invalid ibans"
+    quickCheck $ forAll genInvalidIBAN $ not . iban
