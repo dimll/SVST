@@ -69,3 +69,5 @@ main = do
     print(weaker p prop3 prop1)
     print(weaker p prop1 prop4)
     print(weaker p prop4 prop2)
+
+-- Time Spent : 2.5 hours
