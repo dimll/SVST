@@ -31,17 +31,19 @@ convertLettersToNumericValue = concatMap (\x -> if ord x > 57 then show $ ord x 
 computeRemainder :: String -> Bool 
 computeRemainder n = read ( convertLettersToNumericValue $ move4CharactersToEnd n) `mod` 97 == 1
 
--- Automated test for incorrect ibans
+-- Automated test and helpers for incorrect ibans
 genCountryCodeTouple :: Gen ([Char], Int)
 genCountryCodeTouple = elements countrycodes
 
 genNumbers :: Int -> Gen [Int]
-genNumbers n = listOf (choose (1,9)) `suchThat` (\xs -> length xs == n)
+genNumbers n = listOf (choose (0,9)) `suchThat` (\xs -> length xs == n)
 
 --As can be seen in the main function, this generator is used not make invalid IBAN numbers. 
 -- It has three components: 
 -- 1. Choose a random country code, and country IBAN length from the given list.
--- 2. Generate an Int array based on the country IBAN length with digits 
+-- 2. Generate an Int array based on the country IBAN length with digits (0-9)
+-- 3. Return a string starting with the country code and the correct amount of random digits after. 
+-- This generator will sometimes create valid IBANs, that result in a checksum of 1. While this is somewhat rare, it does occur. 
 genInvalidIBAN :: Gen String
 genInvalidIBAN = do 
     countryTouple <- genCountryCodeTouple >>= \x -> return x
