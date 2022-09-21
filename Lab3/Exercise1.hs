@@ -5,10 +5,13 @@ import Test.QuickCheck
 
 import Lecture3
 
-
+-- A contradiction checks if the form is always False
+-- If not returns False, otherwise True
 contradiction :: Form -> Bool
 contradiction f = not (all (\v -> evl v f)(allVals f))
 
+-- A Tautology checks if the form is always True. 
+-- If not it returns False, otherwise True
 tautology :: Form -> Bool
 tautology f = (all(\v -> evl v f)(allVals f))
 
@@ -23,10 +26,10 @@ equiv f1 f2 = all(\v -> evl v f1 == evl v f2)(allVals f1)
 -- We are construction always True and always False forms 
 -- to check the above definitions
 
--- Always True 
+-- Always True (P V ¬P)
 formT = Dsj [p ,(Neg p)]
 
--- Always False
+-- Always False (P ^ ¬P)
 formF = Cnj [p ,(Neg p)]
 
 main :: IO ()
