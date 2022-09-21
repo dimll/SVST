@@ -66,3 +66,5 @@ main = do
     print "====================================="
     print "Check for 100 invalid ibans, sometimes valid IBANs will occur."
     quickCheck $ forAll genInvalidIBAN $ not . iban
+
+-- Time spent: 3h

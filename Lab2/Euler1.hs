@@ -24,3 +24,5 @@ res = sum (multiple3or5 1000)
 main :: IO () 
 main = do 
     print res 
+
+-- Time Spent : 10 mins

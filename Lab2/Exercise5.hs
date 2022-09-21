@@ -97,3 +97,5 @@ main = do
     quickCheck testPropIsSameSum
     print "Check that the length of each list is equal"
     quickCheck testPropIsSameLength
+
+-- Time spent: 1h 

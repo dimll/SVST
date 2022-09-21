@@ -22,3 +22,5 @@ diff n = res2 n - res1 n
 main :: IO () 
 main = do 
     print $ diff 100
+
+-- Time Spent : 10 mins
