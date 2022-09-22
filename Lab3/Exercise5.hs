@@ -1,3 +1,5 @@
+-- Time taken : 1.5 hours
+
 import Data.List
 import Data.Char
 import System.Random
