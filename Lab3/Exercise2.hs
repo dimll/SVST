@@ -14,10 +14,9 @@ propIsReparseCorrect :: String ->  Bool
 propIsReparseCorrect s = stripWhiteSpace s == stripWhiteSpace ( showLst (parse s))
 
 propParenthesisMatches :: String -> Bool 
-propParenthesisMatches s = length (filter (== '(') s) == length (filter (== ')') s )
+propParenthesisMatches s = length (filter (== '(') (showLst $ parse s)) == length (filter (== ')') (showLst $ parse s) )
 
-testPropIsReparseCorrect :: String -> Bool 
-testPropIsReparseCorrect s = parse s --> propIsReparseCorrect s
-
-testPropParenthesisMatches :: String -> Bool 
-testPropParenthesisMatches s = parse s --> propParenthesisMatches s
+main :: IO () 
+main = do 
+    print $ propIsReparseCorrect $ show form1
+    print $ propParenthesisMatches $ show form1
