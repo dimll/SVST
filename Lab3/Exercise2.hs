@@ -6,6 +6,7 @@ import Lecture3
 -- 1. Check if parsed == un-parsed
 -- 2. Check if length is equal 
 -- 3. Check if there amount of open parenthesis equals the amount of closed parenthesis
+-- 4. Check if with an invalid String input the output is an empty list
 
 stripWhiteSpace :: String -> String
 stripWhiteSpace = filter (/= ' ')
@@ -18,7 +19,15 @@ propIsReparseCorrect s = stripWhiteSpace s == stripWhiteSpace ( showLst (parse s
 propParenthesisMatches :: String -> Bool 
 propParenthesisMatches s = length (filter (== '(') (showLst $ parse s)) == length (filter (== ')') (showLst $ parse s) )
 
+-- Check if with an invalid String input the output is an empty list
+propInvalidInput :: String -> Bool
+propInvalidInput s = stripWhiteSpace ( showLst (parse s)) == []
+
+
 main :: IO () 
 main = do 
     print $ propIsReparseCorrect $ show form1
     print $ propParenthesisMatches $ show form1
+
+    -- Invalid string input, should return True
+    print $ propInvalidInput "(1 -1 1)"
