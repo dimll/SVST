@@ -71,6 +71,13 @@ connectorsInSet (x:xs) setForm = connectorInSet x setForm && connectorsInSet xs 
 -- https://stackoverflow.com/questions/3098391/unique-elements-in-a-haskell-list
 unique = reverse . nub . reverse
 
+-- Our sub2 function finds all subproblems of a form by also removing duplicates without using sets
+-- We use the function unique to find all duplicates and we also add all subproblems to a list to find the length
+-- We then write a test further down which is used to test our sub problem function against the given sub problem function that uses sets
+-- We do this by comparing the lengths of the final set and list of subproblems found
+
+-- Another note is that since both sub functions only accept main connectors with two atoms, we had to tune our generator in only generating
+-- forms with two atoms. 
 sub2 :: Form -> [Form]
 sub2 (Prop x) = [Prop x]
 sub2 (Neg f) =  unique (( Neg f):(sub2 f))
@@ -80,12 +87,11 @@ sub2 f@(Impl f1 f2) = unique ( unique ( f :(sub2 f1)) ++(sub2 f2))
 sub2 f@(Equiv f1 f2) = unique ( unique ( f :(sub2 f1)) ++(sub2 f2))
 
 findlength (Set (x:xs)) = (length (x:xs))
-
-nsub2 :: Form -> Int
-nsub2 f = findlength (sub f)
+nsub :: Form -> Int
+nsub f = findlength (sub f)
 
 testSubformulasLength :: Form -> Bool
-testSubformulasLength f = findlength (sub f) == length (sub2 f)
+testSubformulasLength f = nsub (f) == length (sub2 f)
 
 main :: IO () 
 main = do 
