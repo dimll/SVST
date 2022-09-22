@@ -1,4 +1,4 @@
--- Time taken : 1.5 hours
+-- Time taken : 2 hours
 
 import Data.List
 import Data.Char
