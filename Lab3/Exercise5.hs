@@ -66,8 +66,30 @@ connectorsInSet :: [String] -> Set Form -> Bool
 connectorsInSet [] setForm = True
 connectorsInSet (x:xs) setForm = connectorInSet x setForm && connectorsInSet xs setForm 
 
+-- The following function is used to find duplicates inside a list. nub and unique carry the same functionaliy
+-- but unique retains the last occurence of each element 
+-- https://stackoverflow.com/questions/3098391/unique-elements-in-a-haskell-list
+unique = reverse . nub . reverse
+
+sub2 :: Form -> [Form]
+sub2 (Prop x) = [Prop x]
+sub2 (Neg f) =  unique (( Neg f):(sub2 f))
+sub2 f@(Cnj [f1,f2]) = unique ( unique ( f :(sub2 f1)) ++(sub2 f2))
+sub2 f@(Dsj [f1,f2]) = unique ( unique ( f :(sub2 f1)) ++(sub2 f2))
+sub2 f@(Impl f1 f2) = unique ( unique ( f :(sub2 f1)) ++(sub2 f2))
+sub2 f@(Equiv f1 f2) = unique ( unique ( f :(sub2 f1)) ++(sub2 f2))
+
+findlength (Set (x:xs)) = (length (x:xs))
+
+nsub2 :: Form -> Int
+nsub2 f = findlength (sub f)
+
+testSubformulasLength :: Form -> Bool
+testSubformulasLength f = findlength (sub f) == length (sub2 f)
+
 main :: IO () 
 main = do 
     -- all test passed successfully 
     quickCheck $ forAll genSatisfiableComplexForm propAllAtomsAreIncluded
     quickCheck $ forAll genSatisfiableComplexForm allConectivesArePresent
+    quickCheck $ forAll genSatisfiableComplexForm testSubformulasLength
