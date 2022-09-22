@@ -10,9 +10,11 @@ import Lecture3
 stripWhiteSpace :: String -> String
 stripWhiteSpace = filter (/= ' ')
 
+-- Compare input string to output string after parse and un-parse 
 propIsReparseCorrect :: String ->  Bool 
 propIsReparseCorrect s = stripWhiteSpace s == stripWhiteSpace ( showLst (parse s))
 
+-- Check if amount of open parenthesis' equals the amount of closed parenthesis'. 
 propParenthesisMatches :: String -> Bool 
 propParenthesisMatches s = length (filter (== '(') (showLst $ parse s)) == length (filter (== ')') (showLst $ parse s) )
 
