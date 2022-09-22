@@ -1,50 +1,21 @@
-import Data.List
-import Data.Char
-import System.Random
-import Test.QuickCheck
+-- Time spent: 30 minutes
+module Exercise1
+where
 
 import Lecture3
 
--- A contradiction checks if the form is always False
--- If not returns False, otherwise True
-contradiction :: Form -> Bool
-contradiction f = not (all (\v -> evl v f)(allVals f))
+-- Check that all outputs are false
+contradiction :: Form -> Bool 
+contradiction f = not $ all (\v -> evl v f) (allVals f)
 
--- A Tautology checks if the form is always True. 
--- If not it returns False, otherwise True
-tautology :: Form -> Bool
-tautology f = (all(\v -> evl v f)(allVals f))
+-- Check that all outputs are true
+tautology :: Form -> Bool 
+tautology f = all (\v -> evl v f) (allVals f)
 
--- logical entailment 
-entails :: Form -> Form -> Bool
-entails p q = not (all(\v -> evl v p)(allVals p)) || (all(\v -> evl v q)(allVals q))
+-- Use the disjunctive form of implication to see if f entails g.
+entails :: Form -> Form -> Bool 
+entails f g = not (all (\v -> evl v f) (allVals f)) || all (\v -> evl v g) (allVals g)
 
--- logical equivalence
-equiv:: Form->Form->Bool 
-equiv f1 f2 = all(\v -> evl v f1 == evl v f2)(allVals f1)
-
--- We are construction always True and always False forms 
--- to check the above definitions
-
--- Always True (P V ¬P)
-formT = Dsj [p ,(Neg p)]
-
--- Always False (P ^ ¬P)
-formF = Cnj [p ,(Neg p)]
-
-main :: IO ()
-main = do
-    print (tautology formT) -- Should be True
-    print (tautology formF) -- Should be False
-    print (contradiction formT) -- Should be False
-    print (contradiction formF) -- Should be True
-    print (entails formT formT) -- Should be True
-    print (entails formT formF) -- Should be False
-    print (entails formF formT) -- Should be True
-    print (entails formF formF) -- Should be True
-    print (equiv formT formT) -- Should be True
-    print (equiv formT formF) -- Should be False
-    print (equiv formF formT) -- Should be False 
-    print (equiv formF formF) -- Should be True
-
- -- All the above definitions behave as expected so testing is complete   
+-- 
+equiv :: Form -> Form -> Bool 
+equiv f g = all (\v -> evl v f == evl v g) (allVals f)
