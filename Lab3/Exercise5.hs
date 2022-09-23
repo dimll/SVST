@@ -1,6 +1,10 @@
 -- Time taken : 2 hours
 module Exercise5 where
 
+module Exercise5
+
+where 
+
 import Data.List
 import Data.Char
 import System.Random
@@ -89,11 +93,12 @@ sub2 f@(Impl f1 f2) = unique ( unique ( f :(sub2 f1)) ++(sub2 f2))
 sub2 f@(Equiv f1 f2) = unique ( unique ( f :(sub2 f1)) ++(sub2 f2))
 
 findlength (Set (x:xs)) = (length (x:xs))
+
 nsub :: Form -> Int
-nsub f = findlength (sub f)
+nsub f = length (sub2 f)
 
 testSubformulasLength :: Form -> Bool
-testSubformulasLength f = nsub (f) == length (sub2 f)
+testSubformulasLength f = nsub (f) == findlength (sub f)
 
 main :: IO () 
 main = do 
