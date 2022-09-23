@@ -11,7 +11,7 @@ import SetOrd
 import Lecture3
 import Exercise1
 import Exercise3
-import Exercise4
+import Exercise4 (genSatisfiableComplexForm)
   
 
 sub :: Form -> Set Form
@@ -89,11 +89,12 @@ sub2 f@(Impl f1 f2) = unique ( unique ( f :(sub2 f1)) ++(sub2 f2))
 sub2 f@(Equiv f1 f2) = unique ( unique ( f :(sub2 f1)) ++(sub2 f2))
 
 findlength (Set (x:xs)) = (length (x:xs))
+
 nsub :: Form -> Int
-nsub f = findlength (sub f)
+nsub f = length (sub2 f)
 
 testSubformulasLength :: Form -> Bool
-testSubformulasLength f = nsub (f) == length (sub2 f)
+testSubformulasLength f = nsub (f) == findlength (sub f)
 
 main :: IO () 
 main = do 
