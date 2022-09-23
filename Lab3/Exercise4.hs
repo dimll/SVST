@@ -1,3 +1,5 @@
+-- Time spent 80 minutes
+
 module Exercise4 where 
 
 import Data.List
@@ -12,6 +14,7 @@ import Exercise3(cnf)
 -- There were intially problems with using the valuation function with a Gen monad. To fix this, we recreated the valuation in the Gen context
 -- genNames generates a randomly sized list ranging from 1 to 3 with random atoms (props) inside ranging from 1 to 3
 -- This the first key to creating a Gen friendly valuation function since it returns a Gen [Int]
+-- In order for the generation to work with Exercise5.hs we changed the behavior to always return 2 props.
 genNames :: Gen [Int]
 genNames = do
         x <- choose(2,2)
@@ -53,9 +56,16 @@ genSatisfiableComplexForm :: Gen Form
 genSatisfiableComplexForm = genComplexForm `suchThat` (\x -> satisfiable x && not (tautology x))
 
 -- Once we have generated randomly, viable propositions, we can test to see if they are in CNF by comparing their valuations to see if they are equivalent
+-- This is the strongest post-condition we could find.
 testCNFTruthTableEq :: Form -> Bool
 testCNFTruthTableEq f = allVals f == allVals (cnf f)
 
+-- Weaker property: check that all atoms in both the original form and CNF form are equal.
+testCNFHasTheSamePropNames :: Form -> Bool 
+testCNFHasTheSamePropNames f = propNames f == propNames (cnf f)
+
 main :: IO () 
 main = do 
-    verboseCheck $ forAll genSatisfiableComplexForm testCNFTruthTableEq
+    print "Tests that all generated forms from genSatisfiableComplexForm are logically equivalent after having CNF applied to them."
+    quickCheck $ forAll genSatisfiableComplexForm testCNFTruthTableEq
+    quickCheck $ forAll genSatisfiableComplexForm testCNFHasTheSamePropNames

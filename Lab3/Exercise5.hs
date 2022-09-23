@@ -1,9 +1,5 @@
--- Time taken : 2 hours
+-- Time spent: 120 minutes
 module Exercise5 where
-
-module Exercise5
-
-where 
 
 import Data.List
 import Data.Char
@@ -26,21 +22,24 @@ sub f@(Dsj [f1,f2]) = unionSet ( unionSet (Set [f]) (sub f1)) (sub f2)
 sub f@(Impl f1 f2) = unionSet ( unionSet (Set [f]) (sub f1)) (sub f2)
 sub f@(Equiv f1 f2) = unionSet ( unionSet (Set [f]) (sub f1)) (sub f2)
 
---Property 1: Are all atoms included in the output
+-- Below we will define properties in order to test the validity of the given sub function.
+
+--Property 1: Are all atoms included in the output 
 propAllAtomsAreIncluded :: Form -> Bool 
 propAllAtomsAreIncluded f = all (\x -> inSet (Prop x) (sub f)) (propNames f)
 
---Property 2: All connectives of form should be present in the subforms
+
+--Property 2: All connectives of form should be present in the subforms 
 allConectivesArePresent :: Form -> Bool
 allConectivesArePresent f = connectorsInSet (tokensToStrings $ stripForm f) (sub f)
 
 -- Helper functions for property 2
-
 -- Extract the tokens from a form
 stripForm :: Form -> [Token] 
 stripForm f = filter (\x -> x /= TokenOP && x /= TokenCP && not (isDigit (last $ show x))) (lexer (showLst [f]))
 
 -- Tokens to strings function
+-- Converts an array of tokens to an array of their respective string representations.
 tokensToStrings :: [Token] -> [String]
 tokensToStrings [] = []
 tokensToStrings (t:ts)
