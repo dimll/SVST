@@ -1,5 +1,9 @@
 -- Time taken : 2 hours
 
+module Exercise5
+
+where 
+
 import Data.List
 import Data.Char
 import System.Random
