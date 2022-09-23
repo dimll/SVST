@@ -1,14 +1,12 @@
-module Exercise4
-
-where 
+module Exercise4 where 
 
 import Data.List
 import Data.Char
 import System.Random
 import Test.QuickCheck
 import Lecture3
-import Exercise1
-import Exercise3
+import Exercise1(tautology)
+import Exercise3(cnf)
 
 
 -- There were intially problems with using the valuation function with a Gen monad. To fix this, we recreated the valuation in the Gen context

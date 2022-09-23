@@ -1,4 +1,5 @@
 -- Time taken : 2 hours
+module Exercise5 where
 
 import Data.List
 import Data.Char
@@ -9,9 +10,8 @@ import Data.Maybe
 import SetOrd
 
 import Lecture3
-import Exercise1
-import Exercise3
-import Exercise4
+
+import Exercise4(genSatisfiableComplexForm)
   
 
 sub :: Form -> Set Form

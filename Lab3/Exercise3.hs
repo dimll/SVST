@@ -1,7 +1,5 @@
 -- Time spent: 45 minutes
-module Exercise3
-
-where
+module Exercise3 where
 
 import Lecture3
 

@@ -1,6 +1,8 @@
 -- Time spent: 90 minutes
+module Exercise6 where
+
 import Lecture3
-import Exercise3
+import Exercise3(cnf)
 import Exercise4(genSatisfiableComplexForm)
 import Test.QuickCheck
 

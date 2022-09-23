@@ -1,6 +1,5 @@
 -- Time spent: 30 minutes
-module Exercise1
-where
+module Exercise1 where
 
 import Lecture3
 
@@ -16,6 +15,6 @@ tautology f = all (\v -> evl v f) (allVals f)
 entails :: Form -> Form -> Bool 
 entails f g = not (all (\v -> evl v f) (allVals f)) || all (\v -> evl v g) (allVals g)
 
--- 
+-- Compare every row in the truth table for each function and make sure they are equal.
 equiv :: Form -> Form -> Bool 
 equiv f g = all (\v -> evl v f == evl v g) (allVals f)
