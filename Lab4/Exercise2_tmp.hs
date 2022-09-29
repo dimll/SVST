@@ -2,6 +2,8 @@ import Data.List
 import LTS    
 import Test.QuickCheck
 
+import Ex1
+
 -- Generates the most generic IOLTS
 -- That means that the set of input or/and output labels might 
 -- be empty. Also some loops (same action between the same state)
@@ -73,4 +75,4 @@ genOutputLabel = do
 
 main :: IO ()
 main = do 
-    print ("Exercise 2")
+    quickCheck $ forAll ltsGen validateLTS

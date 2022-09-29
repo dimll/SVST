@@ -61,5 +61,5 @@ validateLTS iolts = ((not$isEmptyStates(ioltsStates iolts)  && (((ioltsQ0 iolts)
 --inValidcounterImpl :: IOLTS
 --inValidcounterImpl = createIOLTS [(5, "?coin", 1), (2, "!tea", 3), (2, "!coffee", 4)]
 
-main :: IO ()
-main = putStrLn "VALIDATING LTS "
+--main :: IO ()
+--main = putStrLn "VALIDATING LTS "
