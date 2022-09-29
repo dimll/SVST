@@ -52,7 +52,7 @@ ioltsOutputLabels iolts = removePunc (split(show (iolts)) !! 2)
 --in the labeled transitions the transition of states are all elements of States (state,label,state)
 -- input labels and output labels can not be the same ==> (input labels) intersection (output labels)=[]
 validateLTS :: IOLTS -> Bool 
-validateLTS iolts = ((not$isEmptyStates(ioltsStates iolts)  && (((ioltsQ0 iolts)!!0) `elem` (ioltsStates iolts)))  && (subset (ioltsTrans iolts) (ioltsStates iolts))) && ((subset (ioltsInputLabels iolts)  (ioltsOutputLabels iolts))== False)
+validateLTS iolts = ((not$isEmptyStates(ioltsStates iolts)  && (((ioltsQ0 iolts)!!0) `elem` (ioltsStates iolts)))  && (subset (ioltsTrans iolts) (ioltsStates iolts))) && (length ( (ioltsInputLabels iolts) \\ (ioltsOutputLabels iolts)) == 0)
 
 --I used valid examples from LTS.hs
 --I generated invalid examples manually below:
