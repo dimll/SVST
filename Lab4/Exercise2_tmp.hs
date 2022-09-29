@@ -2,19 +2,11 @@ import Data.List
 import LTS    
 import Test.QuickCheck
 
--- ltsGen :: Gen IOLTS 
-
 -- Generate boolean value 
 genBool :: Gen Bool 
 genBool = do 
     b <- arbitrary
     return b
-
--- -- Generate the number of total transitions
--- genTransitionsNum :: Gen Integer
--- genTransitionsNum = do 
---     n <- choose (2,4)
---     return n 
 
 -- Generate list of States 
 genStatesList :: Gen [State]
@@ -55,9 +47,6 @@ genTransitions = do
     res <- vectorOf size genTransition
     return res
 
-
--- type IOLTS = ([State], [Label], [Label], [LabeledTransition], State)
--- createIOLTS [(1, "?coin", 2), (2, "!tea", 3), (2, "!coffee", 4)]
 ltsGen :: Gen IOLTS
 ltsGen = do
     t <- genTransitions
