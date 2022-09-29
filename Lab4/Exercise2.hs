@@ -1,6 +1,7 @@
 -- Time spent: 60 minutes
 
-import LTS (IOLTS, Label, LabeledTransition, State, createIOLTS)
+import Exercise1 (validateLTS)
+import LTS
 import Test.QuickCheck
 
 ltsGen :: Gen IOLTS
@@ -26,3 +27,7 @@ labeledTransitionGen n = do
   states <- domainGen n
   labels <- labelsGen n
   return (zip3 states labels (tail states ++ [head states]))
+
+main :: IO ()
+main = do
+  quickCheck $ forAll ltsGen validateLTS
