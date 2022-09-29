@@ -1,0 +1,23 @@
+module Ex4 where
+
+import LTS
+import Data.List
+
+--state1 and state2 from labeled transitions (state1,label,state2)
+--ioltsTrans ::IOLTS->  [(Int, Int)]
+
+fst5 :: IOLTS -> [State]
+fst5 (a,_,_,_,_)=a
+
+label5 :: IOLTS ->  [(State, Label, State)]
+label5 (_,_,_,d,_)=d
+
+snd2 :: (State, Label, State) -> Label
+snd2 (_,a,_) = a
+
+--after "coin" coffeeModel1
+after :: Label -> IOLTS -> [State]
+after labl iolts =  map (\(_, _, x) -> x) (filter (\x -> snd2(x)== labl) (label5 iolts))
+
+main :: IO ()
+main = putStrLn "Ex4"
