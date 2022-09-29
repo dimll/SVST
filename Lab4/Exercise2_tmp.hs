@@ -73,6 +73,19 @@ genOutputLabel = do
     outLabel <- elements outLabels
     return outLabel 
 
+-- Generates a 4 character random string
+genRandomLabel :: Gen Label
+genRandomLabel = do 
+    c1 <- choose('a','z')
+    c2 <- choose('a','z')
+    c3 <- choose('a','z')
+    c4 <- choose('a','z')
+    n <- choose(1,23)
+    let l = permutations [c1,c2,c3,c4]
+    return (l !! n)
+
+
 main :: IO ()
 main = do 
-    quickCheck $ forAll ltsGen validateLTS
+    print "Ex2"
+    --quickCheck $ forAll ltsGen validateLTS
