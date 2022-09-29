@@ -4,11 +4,17 @@ import Test.QuickCheck
 
 -- ltsGen :: Gen IOLTS 
 
--- Generate the number of total transitions
-genTransitionsNum :: Gen Integer
-genTransitionsNum = do 
-    n <- choose (2,4)
-    return n 
+-- Generate boolean value 
+genBool :: Gen Bool 
+genBool = do 
+    b <- arbitrary
+    return b
+
+-- -- Generate the number of total transitions
+-- genTransitionsNum :: Gen Integer
+-- genTransitionsNum = do 
+--     n <- choose (2,4)
+--     return n 
 
 -- Generate list of States 
 genStatesList :: Gen [State]
@@ -32,26 +38,30 @@ genOutputLabel = do
     outLabel <- elements outLabels
     return outLabel 
 
-
-createTTuple :: State -> String -> State -> (State, String,State)
-createTTuple s1 str s2 = (s1,str,s2)
+genTransition :: Gen LabeledTransition
+genTransition = do 
+    l1 <- genStatesList
+    s1 <- elements l1
+    s2 <- elements l1
+    actionType <- genBool 
+    action <- if (actionType) 
+                then genInputLabel
+                else genOutputLabel
+    return (s1,action,s2)
+    
+genTransitions :: Gen [LabeledTransition]
+genTransitions = do 
+    size <- choose(2,4)
+    res <- vectorOf size genTransition
+    return res
 
 
 -- type IOLTS = ([State], [Label], [Label], [LabeledTransition], State)
 -- createIOLTS [(1, "?coin", 2), (2, "!tea", 3), (2, "!coffee", 4)]
 ltsGen :: Gen IOLTS
 ltsGen = do
-    transitionsNum <- genTransitionsNum
-    statesList <- genStatesList
-    
-    
-    let t1 = (1, "?coin", 2)
-    let t2 = (1, "?coin", 3)
-    a1 <- elements [t1,t2]
-    return (createIOLTS [a1])
-
-
-
+    t <- genTransitions
+    return (createIOLTS t)
 
 main :: IO ()
 main = do 
