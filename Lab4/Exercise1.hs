@@ -1,3 +1,4 @@
+--Time Spent on Exercise 1 : 60 minutes
 module Exercise1 where
 
 import Data.List
