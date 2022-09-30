@@ -11,8 +11,8 @@ ltsGen = do
   labeledTransitions <- labeledTransitionGen 5
   return (createIOLTS labeledTransitions)
 
---domainGen receives an integer as its input parameter and returns a list of generated states. It does this by creating random/arbitrary integers 
---such that all generated numbers are greater than 0 and the list contains n number of elements. For example if you input n as 5, it will create 5 numbers 
+--domainGen receives an integer as its input parameter and returns a list of generated states. It does this by creating random/arbitrary integers
+--such that all generated numbers are greater than 0 and the list contains n number of elements. For example if you input n as 5, it will create 5 numbers
 --that are greater than 0 as a list.
 domainGen :: Int -> Gen [State]
 domainGen n = listOf ((arbitrary :: Gen Integer) `suchThat` (> 0)) `suchThat` (\xs -> length xs == n)
@@ -39,19 +39,17 @@ labeledTransitionGen n = do
   labels <- labelsGen n
   return (zip3 states labels (tail states ++ [head states]))
 
-
 -- Generic Implementation of IOLTS below :
 -- Generates the most generic IOLTSs, that means the following conditions possibly exist in the generated IOLTSs:
-    --a. the set of input or output labels might be empty. 
-    --b. some loops (same action between the same state) may exist.
-    --c. some states might be never reached (orphans).
-
+--a. the set of input or output labels might be empty.
+--b. some loops (same action between the same state) may exist.
+--c. some states might be never reached (orphans).
 
 --ltsGenGeneric first creates random LTSs by calling genericLabeledTransitionGen and feeds them to createIOLTS function to obtain IOLTSs.
 ltsGenGeneric :: Gen IOLTS
 ltsGenGeneric = do
-    t <- genericLabeledTransitionGen 3
-    return (createIOLTS t)
+  t <- genericLabeledTransitionGen 3
+  return (createIOLTS t)
 
 --genericLabeledTransitionGen : generates state transitions between a starting state we obtain from domainGen, which returns a list of states,
 --an end state which we obtain similarly by shuffling the list of states and a label in between the start and end states we obtain by labelsGen, which returns a list
@@ -63,12 +61,11 @@ genericLabeledTransitionGen n = do
   s <- shuffle domain
   return (zip3 domain labels s)
 
-
 main :: IO ()
 main = do
   -- Inside main function we automated the checking procedure with QuickCheck.
   -- We have created 2 generators for valid IOLTS generation. Each generator generators IOLTSs. After creating multiple IOLTSs with QuickCheck,
-  -- We called validateLTS function to validate whether or not our generators produce valid IOLTSs. 
+  -- We called validateLTS function to validate whether or not our generators produce valid IOLTSs.
   -- Both generators have passed all tests with our validation function we created in Exercise 1.
   quickCheck $ forAll ltsGen validateLTS
   quickCheck $ forAll ltsGenGeneric validateLTS

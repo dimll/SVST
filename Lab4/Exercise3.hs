@@ -1,3 +1,5 @@
+module Exercise3 where
+
 import Data.List
 import Exercise1 (getIOLTSTransitions)
 import Exercise2 (ltsGen)
