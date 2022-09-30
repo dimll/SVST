@@ -1,5 +1,5 @@
 -- Time spent 2 hours and failed... :(
-import Control.Exception
+import Control.Exception --Starting to lose control..
 import LTS
 
 perfectDoor :: IOLTS
@@ -12,8 +12,11 @@ Essentially define this function:
 adapter :: (State -> Label -> (State, Label)) -> IOLTS
 
 Then use it like this:
-isValidImplementation :: IOLTS -> Bool
-isValidImplementation iolts = iolts `ioco` perfectDoor
+testLTSAgainstSUT :: IOLTS -> (State -> Label -> (State, Label)) -> Bool
+testLTSAgainstSUT iolts sut = (adapter sut) `ioco` iolts
+
+Example:
+testLTSAgainstSUT perfectDoor doorImpl1
 
 Once we have the adapted IOLTS we can run the ioco function form ex 5 to see if they are ioco, and thereby valid.
 -}
