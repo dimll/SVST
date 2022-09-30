@@ -15,9 +15,12 @@ label5 (_,_,_,d,_)=d
 snd2 :: (State, Label, State) -> Label
 snd2 (_,a,_) = a
 
+findInitial :: IOLTS -> State
+findInitial (_,_,_,_,a) = a
+
 --after "coin" coffeeModel1
 after :: Label -> IOLTS -> [State]
-after labl iolts =  map (\(_, _, x) -> x) (filter (\x -> snd2(x)== labl) (label5 iolts))
+after labl iolts =  map (\(_, _, x) -> x) (filter (\(x, y, _) -> y == labl && x == (findInitial iolts)) (label5 iolts))
 
 main :: IO ()
 main = putStrLn "Ex4"

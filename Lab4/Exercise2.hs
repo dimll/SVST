@@ -51,7 +51,11 @@ genericLabeledTransitionGen n = do
 
 main :: IO ()
 main = do
+<<<<<<< HEAD
   -- Both passed all tests with our validation function we 
   -- created in Exercise 1
   quickCheck $ forAll ltsGen validateLTS
   quickCheck $ forAll ltsGenGeneric validateLTS
+=======
+  verboseCheck $ forAll ltsGen validateLTS
+>>>>>>> 5a986d1 (Add exercise 5)
