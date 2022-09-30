@@ -53,7 +53,7 @@ ltsGenGeneric = do
     t <- genericLabeledTransitionGen 3
     return (createIOLTS t)
 
---genericLabeledTransitionGen : generates state transitions between a starting state we obtain from domainGenand, which returns a list of states,
+--genericLabeledTransitionGen : generates state transitions between a starting state we obtain from domainGen, which returns a list of states,
 --an end state which we obtain similarly by shuffling the list of states and a label in between the start and end states we obtain by labelsGen, which returns a list
 --of labels. After all 3 components are obtained, we put them into the (start,label,end) format to create a state transition.
 genericLabeledTransitionGen :: Int -> Gen [LabeledTransition]
