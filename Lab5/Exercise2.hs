@@ -1,13 +1,9 @@
-import Exercise1
-
 import Mutation
 import Test.QuickCheck
 import Data.List
 import MultiplicationTable
 import Data.Maybe
 import Debug.Trace
-
-
 
 --countSurvivors :: Integer -> [([Integer] -> Integer -> Property)] -> (Integer -> [Integer]) -> Integer
 
