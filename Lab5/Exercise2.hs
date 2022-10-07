@@ -7,6 +7,12 @@ import MultiplicationTable
 import Mutation
 import Test.QuickCheck
 
+type MTProp = [Integer] -> Integer -> Bool
+
+type MTMutator = [Integer] -> Gen [Integer]
+
+type MTFunction = (Integer -> [Integer])
+
 -- mutatateOne function takes as an argument
 -- one property and the function under test (fut)
 -- and generates the output of a hardcoded mutator
@@ -23,7 +29,7 @@ mutateOne prop fut = mutate addElements prop fut 10
 -- equal to the number of properties we are testing. In our case
 -- we have defined 5 properties so the length of the output list
 -- will be 5.
-mutateMultiple :: [([Integer] -> Integer -> Bool)] -> (Integer -> [Integer]) -> Gen [Maybe Bool]
+mutateMultiple :: [[Integer] -> Integer -> Bool] -> (Integer -> [Integer]) -> Gen [Maybe Bool]
 mutateMultiple [] fut = return []
 mutateMultiple (x : xs) fut = do
   l <- mutateOne x fut
@@ -34,7 +40,7 @@ mutateMultiple (x : xs) fut = do
 -- The total number of mutants will be N*(the number of properties)
 -- So for 5 properties if we input N=800 to the function
 -- the output lenght will have 800*5= 4000 elements
-mutateTimes :: Int -> [([Integer] -> Integer -> Bool)] -> (Integer -> [Integer]) -> Gen [Maybe Bool]
+mutateTimes :: Int -> [[Integer] -> Integer -> Bool] -> (Integer -> [Integer]) -> Gen [Maybe Bool]
 mutateTimes 0 props fut = return []
 mutateTimes x props fut = do
   l <- mutateMultiple props fut
@@ -43,7 +49,7 @@ mutateTimes x props fut = do
 
 -- Filters the list of Maybe booleans and keeps only the Just True
 -- ones which are those that survived.
-filterSurv :: Int -> [([Integer] -> Integer -> Bool)] -> (Integer -> [Integer]) -> Gen Int
+filterSurv :: Int -> [[Integer] -> Integer -> Bool] -> (Integer -> [Integer]) -> Gen Int
 filterSurv num props fut = do
   vect <- mutateTimes num props fut
   return $ length $ filter (== Just True) vect
@@ -52,9 +58,9 @@ filterSurv num props fut = do
 -- The first input is N. Have in mind that as explained earlier the
 -- total number of mutants will be N * (number of properties)
 -- For example for 5 properties we need N=800 to generate 4000 mutants
-countSurvivors :: Integer -> [([Integer] -> Integer -> Bool)] -> (Integer -> [Integer]) -> Gen Integer
+countSurvivors :: Integer -> [[Integer] -> Integer -> Bool] -> (Integer -> [Integer]) -> Gen Integer
 countSurvivors num props fut = do
-  x <- filterSurv (fromIntegral (num)) props fut
+  x <- filterSurv (fromIntegral num) props fut
   return $ toInteger x
 
 -- Example of use
@@ -93,9 +99,15 @@ countSurvivors num props fut = do
 -- will kill no mutant if the mutator is the one that reverses the list
 -- and that is completely logical.
 
+-- Alternative smaller implementation
+countSurvivors' :: Integer -> [MTProp] -> MTMutator -> MTFunction -> Gen Integer
+countSurvivors' number ps m f = do
+  mutations <- listOf (mutate' m ps f 5) `suchThat` (\xs -> toInteger (length xs) == number)
+  return $ toInteger $ length mutations
+
 main :: IO ()
 main = do
   -- Displays the number of survivors for a property and 4000 mutants (5*800)
   -- In this case the mutator used is addElements.
   survivors <- generate $ countSurvivors 800 multiplicationTableProps multiplicationTable
-  print (survivors)
+  print survivors
