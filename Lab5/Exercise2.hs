@@ -9,7 +9,7 @@ import Debug.Trace
 -- mutatateOne function takes as an argument 
 -- one property and the function under test (fut)
 -- and generates the output of a hardcoded mutator 
--- (in this case the mutator is changeValueOfAnyElement)
+-- (in this case the mutator is addElements)
 -- We also hardcode the input argument (10) of the function under test 
 -- because it does not matter for the testing. 
 mutateOne :: ([Integer] -> Integer -> Bool)-> (Integer -> [Integer]) -> Gen (Maybe Bool)
@@ -48,6 +48,9 @@ filterSurv num props fut = do
     return $ length $ filter (==Just True) vect
 
 -- countSurvivors is the final function as requested for Exercise 2 
+-- The first input is N. Have in mind that as explained earlier the 
+-- total number of mutants will be N * (number of properties)
+-- For example for 5 properties we need N=800 to generate 4000 mutants
 countSurvivors :: Integer -> [([Integer] -> Integer -> Bool)] -> (Integer -> [Integer]) -> Gen Integer
 countSurvivors num props fut = do
     x <- filterSurv (fromIntegral(num)) props fut
@@ -64,6 +67,7 @@ countSurvivors num props fut = do
 -- and each time we were using a different mutator. The presented result 
 -- are illustrating the average after 20 executions (because mutators use
 -- arbitrary generators which give different result in each execution)
+-- The numbers presented below are for 4000 generated mutants 
 
 -- Mutator function -> Number of survivors
 -- addElements -> 150
@@ -80,6 +84,13 @@ countSurvivors num props fut = do
 -- since it kills the less mutants (reasonable as well, considering our set)
 -- of properties 
 
+-- If we use less properties of course the number of survivals will be 
+-- increased (the more properties used for the same mutator, the less 
+-- mutants will survive). Of course different properties also have different 
+-- results (in terms of survivors) for the same mutant. For example propery 
+-- prop_moduloIsZero which tests that any element modulo the input is zero
+-- will kill no mutant if the mutator is the one that reverses the list 
+-- and that is completely logical.  
 
 main :: IO()
 main = do
