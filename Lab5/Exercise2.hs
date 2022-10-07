@@ -5,12 +5,6 @@ import MultiplicationTable
 import Data.Maybe
 import Debug.Trace
 
---countSurvivors :: Integer -> [([Integer] -> Integer -> Property)] -> (Integer -> [Integer]) -> Integer
-
--- List of properties 
-listOfProps :: [[Integer] -> Integer -> Bool]
-listOfProps = multiplicationTableProps
-
 
 -- mutatateOne function takes as an argument 
 -- one property and the function under test (fut)
@@ -19,7 +13,7 @@ listOfProps = multiplicationTableProps
 -- We also hardcode the input argument (10) of the function under test 
 -- because it does not matter for the testing. 
 mutateOne :: ([Integer] -> Integer -> Bool)-> (Integer -> [Integer]) -> Gen (Maybe Bool)
-mutateOne prop fut = mutate changeValueOfAnyElement prop fut 10
+mutateOne prop fut = mutate addElements prop fut 10
 
 -- mutateMultiple function takes a list of properties as an 
 -- argument and the function under test (fut) and generates 
@@ -59,15 +53,38 @@ countSurvivors num props fut = do
     x <- filterSurv (fromIntegral(num)) props fut
     return $ toInteger x
 
---example of use
+-- Example of use
 -- generate $ countSurvivors 1000 multiplicationTableProps multiplicationTable 
 
+-- Document the effect of which mutations are used and which 
+-- properties are used on the number of survivors.
 
+-- Results: 
+-- We executed the program with all five (5) mutators we have constructed 
+-- and each time we were using a different mutator. The presented result 
+-- are illustrating the average after 20 executions (because mutators use
+-- arbitrary generators which give different result in each execution)
+
+-- Mutator function -> Number of survivors
+-- addElements -> 150
+-- removeElements -> 2285
+-- changeValueOfFirstElement -> 920
+-- changeValueOfAnyElement -> 880
+-- reverseList -> 2400
+
+-- The results are reasonable and as exprected considering the 
+-- five properties we have defined. From that results we can 
+-- conclude that addElements is the mutator that kills the most (strongest) 
+-- mutants and this is exprected since we can easily see that 
+-- by observing the properties. reverseList mutator is the weakest 
+-- since it kills the less mutants (reasonable as well, considering our set)
+-- of properties 
 
 
 main :: IO()
 main = do
     -- Displays the number of survivors for a property and 4000 mutants (5*800) 
+    -- In this case the mutator used is addElements.
     survivors <- generate $ countSurvivors 800 multiplicationTableProps multiplicationTable
     print (survivors)
 
