@@ -2,8 +2,8 @@ module Mutation where
 import Test.QuickCheck
 import Data.List
 import MultiplicationTable
-import Data.Maybe
 import Debug.Trace
+
 
 -- Applies a mutator to a property and function under test, then returns whether the mutant is killed (Just False), whether it lives (Just True), or that the mutant did not change the output (Nothing)
 mutate :: Eq a => (a -> Gen a) -> (a -> Integer -> Bool) -> (Integer -> a) -> Integer -> Gen (Maybe Bool)
@@ -50,7 +50,7 @@ removeElements xs = choose (1, length xs) >>= \x -> return $ take x xs
 anyList :: [Integer] -> Gen [Integer]
 anyList xs = arbitrary
 
-mutators = [anyList, removeElements, addElements]
+mutators = [anyList, removeElements, addElements, changeValueOfFirstElement, changeValueOfAnyElement, reverseList]
 
 changeValueOfFirstElement :: [Integer] -> Gen[Integer]
 changeValueOfFirstElement xs = do
