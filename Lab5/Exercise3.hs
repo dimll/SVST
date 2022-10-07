@@ -15,7 +15,7 @@ mutesOnProp number p (m : ms) f = do
   next <- mutesOnProp number p ms f
   return $ mutations ++ next
 
---testManynProps : takes an a list of properties and list of mutations. It creates mutations on the function under test for a multiple property and does it for 
+--testManynProps : takes an a list of properties and list of mutations. It creates mutations on the function under test for a multiple property and does it for
 --all mutations recursively.
 testManyProps :: [MTMutator] -> [MTProp] -> Gen [[Bool]]
 testManyProps ms [] = listOf (arbitrary :: Gen [Bool]) `suchThat` null
@@ -23,7 +23,6 @@ testManyProps ms (p : ps) = do
   mss <- mutesOnProp 1000 p ms multiplicationTable
   next <- testManyProps ms ps
   return $ mss : next
-
 
 --This is a helper function we have written to help us with type conversions.
 convertBoolsArrayToIntsArray :: [[Bool]] -> Gen [[Integer]]
@@ -38,7 +37,7 @@ boolsToInts :: [Bool] -> Integer -> [Integer]
 boolsToInts [] start = []
 boolsToInts (b : bs) start = [start | not b] ++ boolsToInts bs (start + 1)
 
---genIntsArray: is applying the mutations on the properties and checks if there exists any property that has surviving mutants. If filters out the properties that 
+--genIntsArray: is applying the mutations on the properties and checks if there exists any property that has surviving mutants. If filters out the properties that
 -- actually failed for a given mutant.For each mutant it provides a list indicating covered properties.Each index of the returned list is a reference to a mutant.
 --Index 1 for mutant 1, index 2 for mutant 2 and so on.
 genIntsArray :: [MTMutator] -> Gen [[Integer]]
