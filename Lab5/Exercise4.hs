@@ -15,7 +15,7 @@ getPropertyPowerSet = powerset multiplicationTableProps
 propLabels :: [[Int]]
 propLabels = powerset [1 .. length multiplicationTableProps]
 
---iterateOverPowerSet: We iterated over the power set we have created for the properties of multiplication table. We used the same logic we have applied for the 
+--iterateOverPowerSet: We iterated over the power set we have created for the properties of multiplication table. We used the same logic we have applied for the
 --counting survivors in exercise 2. For each mutator we counted the number of survivor properties and called the survivorPercentage function to calculate the percentages.
 iterateOverPowerSet :: [[MTProp]] -> MTMutator -> Gen [Float]
 iterateOverPowerSet [] m = listOf (arbitrary :: Gen Float) `suchThat` null
