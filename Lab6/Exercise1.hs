@@ -1,10 +1,8 @@
 -- Time spent: 25 mins
-module Exercise1 (genSet) 
+module Exercise1 (genSet, genSetWithoutQ) where
 
-where
-
-import SetOrd
 import Data.List
+import SetOrd
 import System.Random
 import Test.QuickCheck
 
@@ -27,7 +25,7 @@ genSetWithoutQ :: IO (Set Int)
 genSetWithoutQ = do
     l <- genRandomInt
     rNum <- sequence $ replicate l $ randomRIO(1,100::Int)
-    return $ Set rNum 
+    return $ Set $ sort $ nub $ rNum
 
 -- Helper function: generates a number between [1,100]
 genRandomInt :: IO Int 
@@ -38,12 +36,12 @@ genRandomInt = randomRIO (1,100) :: IO Int
 
 -- Examples of the two test generators
 main :: IO ()
-main = do 
-    -- Example without QuickCheck
-    print "Random Set Int generation without QuickCheck: "
-    x <- genSetWithoutQ
-    print (x)
-    -- Example with QuickCheck
-    print "Random Set Int generation with QuickCheck: "
-    x <- generate genSet
-    print (x)
+main = do
+  -- Example without QuickCheck
+  print "Random Set Int generation without QuickCheck: "
+  x <- genSetWithoutQ
+  print (x)
+  -- Example with QuickCheck
+  print "Random Set Int generation with QuickCheck: "
+  x <- generate genSet
+  print (x)
