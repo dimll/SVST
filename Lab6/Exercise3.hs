@@ -14,7 +14,7 @@ type Rel a = [(a,a)]
 
 -- Using swap we are reversing the tuples, going from (a,b)
 -- to the symmetric (b,a) and after that we are adding the given 
--- tuples. After that we are demoving the duplicates that will occur 
+-- tuples. Next we are removing the duplicates that will occur 
 -- in case that the initial pairs already contain one or more 
 -- symmetric values
 symClos :: Ord a => Rel a -> Rel a
