@@ -1,3 +1,5 @@
+module Exercise2 where
+
 import Data.List
 import SetOrd
 
