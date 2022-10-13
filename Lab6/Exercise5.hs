@@ -29,5 +29,5 @@ trClos rel
 
         where new_closure = rel @@ rel      -- rel @@ rel = R@@R = R^2
               closure =rel
-              old_closure = closure `union` new_closure  --rel Union R^n
+              old_closure = nub (closure `union` new_closure)  --rel Union R^n
 
